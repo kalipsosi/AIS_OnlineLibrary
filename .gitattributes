@@ -1,0 +1,20 @@
+# Нормализация окончаний строк
+* text=auto
+
+# Текстовые файлы
+*.cs text diff=csharp
+*.csproj text
+*.sln text eol=crlf
+*.sql text
+*.json text
+*.yaml text
+*.md text
+
+# Бинарные файлы
+*.png binary
+*.jpg binary
+*.pdf binary
+*.epub binary
+*.dll binary
+*.bak filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text

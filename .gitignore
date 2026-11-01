@@ -1,0 +1,36 @@
+# Сборка .NET
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Результаты тестов
+[Tt]est[Rr]esult*/
+
+# Локальные базы данных и логи
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite-journal
+*.log
+
+# Локальное хранилище файлов книг и поисковый индекс
+storage/books/
+search-index/
+
+# Секреты подключения
+appsettings.Development.json
+*.env
+
+# ОС
+.DS_Store
+Thumbs.db

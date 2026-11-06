@@ -1,0 +1,26 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "russian_books": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "russian_stop", "russian_stemmer"]
+        }
+      },
+      "filter": {
+        "russian_stop": { "type": "stop", "stopwords": "_russian_" },
+        "russian_stemmer": { "type": "stemmer", "language": "russian" }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "bookId": { "type": "integer" },
+      "title": { "type": "text", "analyzer": "russian_books" },
+      "authors": { "type": "text", "analyzer": "russian_books" },
+      "year": { "type": "integer" },
+      "content": { "type": "text", "analyzer": "russian_books", "term_vector": "with_positions_offsets" }
+    }
+  }
+}

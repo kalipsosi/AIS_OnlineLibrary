@@ -1,0 +1,26 @@
+@startuml c4-containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title АИС «Онлайн-библиотека вуза» – диаграмма контейнеров (C4 Level 2)
+
+Person(reader, "Читатель", "Студент или преподаватель")
+Person(librarian, "Библиотекарь", "Загружает книги и лицензии")
+
+System_Boundary(lib, "Онлайн-библиотека") {
+    Container(web, "Веб-клиент читателя", "Blazor WebAssembly", "Каталог, поиск, чтение книг")
+    Container(api, "API каталога", "ASP.NET Core", "Книги, выдача доступа, лицензии")
+    Container(search, "Сервис полнотекстового поиска", "Elasticsearch", "Индекс текста книг с русской морфологией")
+    Container(license, "Сервис выдачи лицензий", "ASP.NET Core", "Учет купленных копий и сроков доступа")
+    ContainerDb(db, "База данных", "PostgreSQL", "Метаданные книг, читатели, выдачи")
+    ContainerDb(files, "Хранилище файлов", "S3-совместимое", "Файлы PDF и EPUB")
+}
+
+Rel(reader, web, "Ищет и читает книги", "HTTPS")
+Rel(librarian, web, "Загружает книги", "HTTPS")
+Rel(web, api, "Запросы", "HTTPS, JSON")
+Rel(api, search, "Поиск по тексту", "HTTP, JSON")
+Rel(api, license, "Проверка и выдача доступа", "HTTP, JSON")
+Rel(api, db, "Чтение и запись", "SQL")
+Rel(license, db, "Учет выдач", "SQL")
+Rel(api, files, "Временная подписанная ссылка", "HTTPS")
+@enduml

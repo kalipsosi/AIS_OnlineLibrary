@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Library.Catalog API
+  description: API каталога АИС «Онлайн-библиотека вуза»
+  version: 1.0.0
+servers:
+  - url: https://library.campus.local/api/v1
+paths:
+  /books/search:
+    get:
+      summary: Полнотекстовый поиск книг
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Поисковый запрос, от 3 до 100 символов
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 100
+      responses:
+        '200':
+          description: Найденные книги с подсвеченными фрагментами
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchHit'
+        '400':
+          description: Запрос слишком короткий или слишком длинный
+  /loans:
+    post:
+      summary: Выдать читателю доступ к книге на 14 дней
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        '201':
+          description: Доступ выдан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+        '404':
+          description: Книга или читатель не найдены
+        '409':
+          description: Все лицензии на книгу уже выданы
+components:
+  schemas:
+    SearchHit:
+      type: object
+      properties:
+        bookId:
+          type: integer
+        title:
+          type: string
+        authors:
+          type: string
+        year:
+          type: integer
+        highlight:
+          type: string
+          description: Найденный фрагмент текста
+    LoanRequest:
+      type: object
+      required: [bookId, readerId]
+      properties:
+        bookId:
+          type: integer
+        readerId:
+          type: integer
+    Loan:
+      type: object
+      properties:
+        loanId:
+          type: integer
+        bookId:
+          type: integer
+        readerId:
+          type: integer
+        expiresAt:
+          type: string
+          format: date-time
+          description: Окончание доступа, через 14 дней после выдачи

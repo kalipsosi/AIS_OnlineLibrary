@@ -64,7 +64,10 @@ components:
           type: integer
         highlight:
           type: string
-          description: Найденный фрагмент текста
+          description: Найденный фрагмент текста, совпадения обернуты в теги <mark>
+        page:
+          type: integer
+          description: Номер страницы, на которой найден фрагмент
     LoanRequest:
       type: object
       required: [bookId, readerId]
